@@ -9,7 +9,8 @@ from typing import List, Optional, Union
 
 import tqdm
 import numpy as np
-
+from sklearn import metrics
+from collections import defaultdict
 import torch
 from transformers import (
     WEIGHTS_NAME,
@@ -30,7 +31,11 @@ def evaluate_standard(preds, labels, scoring_method):
     # and F1 score for the predictions and gold labels.
     # Please also make your sci-kit learn scores are computed
     # using `scoring_method` for the `average` argument.
-    raise NotImplementedError("Please finish the TODO!")
+    acc=metrics.accuracy_score(labels,preds,normalize=True)
+    prec=metrics.precision_score(labels,preds,average=scoring_method)
+    recall=metrics.recall_score(labels,preds,average=scoring_method)
+    f1=metrics.f1_score(labels,preds,average=scoring_method)
+    #raise NotImplementedError("Please finish the TODO!")
     # End of TODO
     ########################################################
 
@@ -45,8 +50,18 @@ def pairwise_accuracy(guids, preds, labels):
     # Hint: Utilize the `guid` as the `guid` for each
     # statement coming from the same complementary
     # pair is identical. You can simply pair the these
-    # predictions and labels w.r.t the `guid`. 
-    raise NotImplementedError("Please finish the TODO!")
+    # predictions and labels w.r.t the `guid`.
+    record=defaultdict(list)
+    for index,pair in enumerate(guids):
+        record[pair].append(index)
+        
+    error=0
+    for index_list in record.values(): #### efficiency improvement??
+        for index in index_list:
+            if preds[index]!=labels[index]:
+                error+=1
+    acc=1-error/len(set(guids))
+    #raise NotImplementedError("Please finish the TODO!")
     # End of TODO
     ########################################################
      
