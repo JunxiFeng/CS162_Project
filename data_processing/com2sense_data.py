@@ -39,8 +39,6 @@ class Com2SenseDataProcessor(DataProcessor):
         if data_dir is None:
             data_dir = self.data_dir
 
-        examples = []   # Store your examples in this list
-
         ##################################################
         # TODO:
         # Some instructions for reading data:
@@ -61,7 +59,50 @@ class Com2SenseDataProcessor(DataProcessor):
         # Use the same guid for statements from the same complementary pair.
         # 6. Make sure to handle if data do not have labels field.
         # This is useful for loading test data
-        raise NotImplementedError("Please finish the TODO!")
+        
+        ## Note: Should be fine... Can double-check
+        examples = []   # Store your examples in this list
+        json_path = os.path.join(data_dir, split+".json")
+        data = json.load(open(json_path, "r"))
+        
+        for i in range(len(data)):
+            datum = data[i] ## load each instance
+            guid=int(i) ## the index
+            sentence_1=datum['sent_1'] ## first sentence of this instance
+            sentence_2=datum['sent_2'] ## second...
+            
+            ## Handle missing labels  
+            label_1=datum['label_1'] if datum.get('label_1')!=None else None  
+            label_2=datum['label_2'] if datum.get('label_2')!=None else None 
+            
+            ## Map labels to 0 and 1
+            label_1=self.label2int[label_1] if label_1!=None else None
+            label_2=self.label2int[label_2] if label_2!=None else None
+            
+            ## assign other properties
+            domain=datum['domain']
+            scenario=datum['scenario']
+            numeracy=bool(datum['numeracy'])
+
+            example_1 = Coms2SenseSingleSentenceExample(
+                guid=guid,
+                text=sentence_1,
+                label=label_1,
+                domain=domain,
+                scenario=scenario,
+                numeracy=numeracy
+            )
+            example_2 = Coms2SenseSingleSentenceExample(
+                guid=guid,
+                text=sentence_2,
+                label=label_2,
+                domain=domain,
+                scenario=scenario,
+                numeracy=numeracy
+            )
+            examples.append(example_1) ## append sequentially to maintain the order
+            examples.append(example_2)
+        #raise NotImplementedError("Please finish the TODO!")
         # End of TODO.
         ##################################################
 

@@ -37,8 +37,6 @@ class SemEvalDataProcessor(DataProcessor):
         if data_dir is None:
             data_dir = self.data_dir
 
-        examples = []   # Store your examples in this list
-
         ##################################################
         # TODO: (Optional) 
         # Some instructions for reading data:
@@ -58,8 +56,45 @@ class SemEvalDataProcessor(DataProcessor):
         # 5. For the guid, simply use the row number (0-
         # indexed) for each data instance.
         # Use the same guid for statements from the same complementary pair.
-        raise NotImplementedError("Please finish the TODO!")
+        #raise NotImplementedError("Please finish the TODO!")
         # End of TODO.
+        
+        # Note: Should be alright...Can double-check
+        examples = []   # Store your examples in this list
+        csv_path = os.path.join(data_dir, split+".csv")
+        data=[]
+        with open(csv_path, newline='') as csvfile: ## read in the data as dictionary
+            reader = csv.DictReader(csvfile)
+            for row in reader:
+                data.append(row)
+                
+        for i in range(len(data)):
+            datum = data[i] ## load each instance
+
+            example_1=SemEvalSingleSentenceExample(
+                guid=i,
+                text=datum['Correct Statement'],
+                label=1,
+                right_reason1=datum['Right Reason1'],
+                right_reason2=datum['Right Reason2'],
+                right_reason3=datum['Right Reason3'],
+                confusing_reason1=datum['Confusing Reason1'],
+                confusing_reason2=datum['Confusing Reason2']
+            )
+
+            example_2=SemEvalSingleSentenceExample(
+                guid=i,
+                text=datum['Incorrect Statement'],
+                label=0,
+                right_reason1=datum['Right Reason1'],
+                right_reason2=datum['Right Reason2'],
+                right_reason3=datum['Right Reason3'],
+                confusing_reason1=datum['Confusing Reason1'],
+                confusing_reason2=datum['Confusing Reason2']
+            )
+
+            examples.append(example_1)
+            examples.append(example_2)
         ##################################################
 
         return examples
