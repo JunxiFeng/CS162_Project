@@ -218,7 +218,10 @@ def train(args, train_dataset, model, tokenizer):
             # (2) Compute the loss (store as `loss` variable)
             # Hint: See the HuggingFace transformers doc to properly get
             # the loss from the model outputs.
-            raise NotImplementedError("Please finish the TODO!")
+            # raise NotImplementedError("Please finish the TODO!")
+
+            outputs = model(**inputs)
+            loss = outputs.loss
 
             if args.n_gpu > 1:
                 # Applies mean() to average on multi-gpu parallel training.
@@ -230,7 +233,8 @@ def train(args, train_dataset, model, tokenizer):
                 loss = loss / args.gradient_accumulation_steps
 
             # (3) Implement the backward for loss propagation
-            raise NotImplementedError("Please finish the TODO!")
+            #raise NotImplementedError("Please finish the TODO!")
+            loss.backward()
 
             # End of TODO.
             ##################################################
