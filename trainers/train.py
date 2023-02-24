@@ -611,18 +611,22 @@ def main():
     # for essential args.
 
     # (1) Load config
-    raise NotImplementedError("Please finish the TODO!")
+    config = AutoConfig.from_pretrained(args.model_name_or_path)
+    # raise NotImplementedError("Please finish the TODO!")
 
     # (2) Load tokenizer
-    raise NotImplementedError("Please finish the TODO!")
+    # raise NotImplementedError("Please finish the TODO!")
+    tokenizer = AutoTokenizer.from_pretrained(args.model_name_or_path)
 
     if args.training_phase == "pretrain":
         # (3) Load MLM model if pretraining (Optional)
         # Complete only if doing MLM pretraining for improving performance
-        raise NotImplementedError("Please finish the TODO!")
+        # raise NotImplementedError("Please finish the TODO!")
+        model = AutoModelForMaskedLM(args.model_name_or_path)
     else:
         # (4) Load sequence classification model otherwise
-        raise NotImplementedError("Please finish the TODO!")
+        # raise NotImplementedError("Please finish the TODO!")
+        model = AutoModelForSequenceClassification.from_pretrained(args.model_name_or_path)
 
     # End of TODO.
     ##################################################
