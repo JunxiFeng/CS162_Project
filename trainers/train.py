@@ -621,20 +621,29 @@ def main():
     # `AutoConfig`, `AutoTokenizer` and some auto
     # model classes correctly. Check the documentation
     # for essential args.
-
+    
+    
+    ## I refer to this from the original project prompt: tokenizer_name and config_name can be both not specified (hence refer to model_name_or_path) or same as MODEL_TYPE.
     # (1) Load config
-    config = AutoConfig.from_pretrained(args.model_name_or_path)
-    # raise NotImplementedError("Please finish the TODO!")
+    if args.config_name != "": ## default is ""
+        config = AutoConfig.from_pretrained(args.config_name)
+    else:
+        config = AutoConfig.from_pretrained(args.model_name_or_path)
+    #raise NotImplementedError("Please finish the TODO!")
 
     # (2) Load tokenizer
-    # raise NotImplementedError("Please finish the TODO!")
-    tokenizer = AutoTokenizer.from_pretrained(args.model_name_or_path)
+    if args.tokenizer_name != "": ## default is ""
+        tokenizer = AutoTokenizer.from_pretrained(args.tokenizer_name)
+    else:
+        tokenizer = AutoTokenizer.from_pretrained(args.model_name_or_path)
+    
+    #raise NotImplementedError("Please finish the TODO!")
 
     if args.training_phase == "pretrain":
         # (3) Load MLM model if pretraining (Optional)
         # Complete only if doing MLM pretraining for improving performance
         # raise NotImplementedError("Please finish the TODO!")
-        model = AutoModelForMaskedLM(args.model_name_or_path)
+        model = AutoModelForMaskedLM.from_pretrained(args.model_name_or_path)
     else:
         # (4) Load sequence classification model otherwise
         # raise NotImplementedError("Please finish the TODO!")
