@@ -218,7 +218,10 @@ def train(args, train_dataset, model, tokenizer):
             # (2) Compute the loss (store as `loss` variable)
             # Hint: See the HuggingFace transformers doc to properly get
             # the loss from the model outputs.
-            raise NotImplementedError("Please finish the TODO!")
+            # raise NotImplementedError("Please finish the TODO!")
+
+            outputs = model(**inputs)
+            loss = outputs.loss
 
             if args.n_gpu > 1:
                 # Applies mean() to average on multi-gpu parallel training.
@@ -230,7 +233,8 @@ def train(args, train_dataset, model, tokenizer):
                 loss = loss / args.gradient_accumulation_steps
 
             # (3) Implement the backward for loss propagation
-            raise NotImplementedError("Please finish the TODO!")
+            #raise NotImplementedError("Please finish the TODO!")
+            loss.backward()
 
             # End of TODO.
             ##################################################
@@ -377,7 +381,8 @@ def evaluate(args, model, tokenizer, prefix="", data_split="test"):
             ##################################################
             # TODO: Evaluation Loop
             # (1) Run forward and get the model outputs
-            raise NotImplementedError("Please finish the TODO!")
+            outputs = model(**inputs)
+            #raise NotImplementedError("Please finish the TODO!")
 
             if has_label or args.training_phase == "pretrain":
                 # (2) If label present or pretraining, compute the loss and prediction logits
@@ -387,15 +392,22 @@ def evaluate(args, model, tokenizer, prefix="", data_split="test"):
                 # indexing properly the outputs as tuples.
                 # Make sure to perform a `.mean()` on the eval loss and add it
                 # to the `eval_loss` variable.
-                raise NotImplementedError("Please finish the TODO!")
+                
+                loss, logits = outputs.loss, outputs.logits
+                eval_loss = loss.mean().item() ## the output loss will be a tensor, so extract the value
+                #raise NotImplementedError("Please finish the TODO!")
             else:
                 # (3) If labels not present, only compute the prediction logits
                 # Label the logits as `logits`
-                raise NotImplementedError("Please finish the TODO!")
+                logits = outputs.logits
+                #raise NotImplementedError("Please finish the TODO!")
 
             # (4) Convert logits into probability distribution and relabel as `logits`
             # Hint: Refer to Softmax function
-            raise NotImplementedError("Please finish the TODO!")
+            
+            logits = logits.softmax(dim=-1) ## the last dimension should be number of classes, or use dim=1
+            
+            #raise NotImplementedError("Please finish the TODO!")
 
             # End of TODO.
             ##################################################
