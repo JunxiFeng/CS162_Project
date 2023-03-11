@@ -60,6 +60,7 @@ def pairwise_accuracy(guids, preds, labels):
         for index in index_list:
             if preds[index]!=labels[index]:
                 error+=1
+                break
     acc=1-error/len(set(guids))
     #raise NotImplementedError("Please finish the TODO!")
     # End of TODO
