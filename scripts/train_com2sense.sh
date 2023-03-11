@@ -9,8 +9,8 @@ python3 -m trainers.train \
   --do_train \
   --do_eval \
   --evaluate_during_training \
-  --per_gpu_train_batch_size 4 \
-  --per_gpu_eval_batch_size 1 \
+  --per_gpu_train_batch_size 10 \
+  --per_gpu_eval_batch_size 5 \
   --learning_rate 1e-5 \
   --num_train_epochs 100.0 \
   --max_seq_length 128 \
