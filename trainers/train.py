@@ -643,11 +643,11 @@ def main():
         # (3) Load MLM model if pretraining (Optional)
         # Complete only if doing MLM pretraining for improving performance
         # raise NotImplementedError("Please finish the TODO!")
-        model = AutoModelForMaskedLM.from_pretrained(args.model_name_or_path)
+        model = AutoModelForMaskedLM.from_pretrained(args.model_name_or_path, config=config, from_tf=bool(".ckpt" in args.model_name_or_path))
     else:
         # (4) Load sequence classification model otherwise
         # raise NotImplementedError("Please finish the TODO!")
-        model = AutoModelForSequenceClassification.from_pretrained(args.model_name_or_path)
+        model = AutoModelForSequenceClassification.from_pretrained(args.model_name_or_path, config=config, from_tf=bool(".ckpt" in args.model_name_or_path))
 
     # End of TODO.
     ##################################################
